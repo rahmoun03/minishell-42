@@ -10,17 +10,16 @@
 
 typedef struct s_redir
 {
-    int    token;
-    char    *arg;
+    int				type;
+    char			*file;
 
-}   t_redir;
+}					t_redir;
 
 typedef struct s_all
 {
 	char			*text;
-	char			*command;
-	char			*opt;
-	char			**arg;
+	char			**cmd;
+	char			**command;
 	t_redir			*rdr;
 	struct s_all	*next;
 }					t_all;
@@ -36,5 +35,6 @@ void	ft_lstadd_back(t_all **lst, t_all *new);
 //      tools
 char	*ft_strdup(const char *s1);
 char 	**ft_ddup(char **str);
+char	**ft_split(char const *s, char c);
 
 # endif

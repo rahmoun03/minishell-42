@@ -2,61 +2,91 @@
 
 int ft_is_char(char c)
 {
-	if (c == ' ' || c == '\t' || c == 34 || c == 39
-		|| c == '|' || c == '>' || c == '<' || c == '=')
+	if (c == ' ' || c == '\t' || c == '\0' || c == '|')
 		return 1;
 	return 0;
 }
 
-void	skip_spaces(t_all *lexer, int *i)
+int ft_len(char **str, int i, int j)
 {
-	while (lexer-> text[*i] == ' ' || lexer-> text[*i] == '\t')
+	int len = 0;
+	while (!ft_is_char(str[i][j]))
+	{
+		len++;
+		j++;
+	}
+	return len;
+}
+
+void	skip_spaces(char *str, int *i)
+{
+	while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
 		(*i)++;
 }
 
-void	lexer_text(t_all *lexer)
+void	lexer_text(t_all *lexer, char **envp)
 {
+	(void)envp;
 	int i;
 	int j;
+	int len;
+	t_all *tmp;
 
+	len = 0;
+	tmp = lexer;
 	i = 0;
-	while (lexer->text[i])
+	j = 0;
+	lexer->command = ft_split(lexer->text, '|');
+	while (lexer->command[i])
 	{
-		printf("aa\n");
-		skip_spaces(lexer, &i);
-		j = 0;
-		while (!ft_is_char(lexer->text[i]))
-			lexer->command[j++] = lexer->text[i++];
-		skip_spaces(lexer, &i);
-		j = 0;
+		tmp->cmd = ft_split(lexer->command[i], ' ');
+		i++;
+		if (lexer->command[i])
+		{
+			ft_lstadd_back(&lexer, ft_lstnew());
+			tmp = tmp->next;
+		}
 	}
 }
 
-void	init_lexer(t_all *lexer)
+void	init_lexer(t_all *lexer, char **env)
 {
+	t_all *tmp = lexer;
+	int i = 0;
+
 	lexer->text = readline(READLINE_MSG);
 	add_history(lexer->text);
-	lexer_text(lexer);
-	printf("text = %s \n", lexer->text);
-	free(lexer->text);
+	lexer_text(lexer, env);
+
+	while(tmp != NULL)
+	{
+		i = 0;
+		printf("-=-=-=-=-=-=-=-=-=-=-=-");
+		while (tmp->cmd[i])
+		{
+			printf("\n%d -> command=%s%%\n", i + 1, tmp->cmd[i]);
+			i++;
+		}
+		tmp = tmp->next;
+	}
 }
 
 int main(int ac, char **av, char **envp)
 {
 	char	**envp_cpy;
-	t_all *lexer;
+	t_all 	*lexer;
 	
 	if (ac != 1 || av[1])
 		error_arg();
 	lexer = (t_all *)malloc(sizeof(t_all));
 	envp_cpy = ft_ddup(envp);
+	lexer->next = NULL;
 
 	while (1)
 	{
-		init_lexer(lexer);
+		init_lexer(lexer, envp);
 
 	/*-------- executor ------*/
 		system(lexer->text);
 	}
 }
-
