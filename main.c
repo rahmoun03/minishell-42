@@ -28,14 +28,14 @@ void	lexer_text(t_all *lexer, char **envp)
 {
 	(void)envp;
 	int i;
-	int j;
-	int len;
+	// int j;
+	// int len;
 	t_all *tmp;
 
-	len = 0;
+	// len = 0;
 	tmp = lexer;
 	i = 0;
-	j = 0;
+	// j = 0;
 	lexer->command = ft_split(lexer->text, "|");
 	while (lexer->command[i])
 	{
@@ -56,31 +56,34 @@ void	init_lexer(t_all *lexer, char **env)
 	int i = 0;
 
 	lexer->text = readline(READLINE_MSG);
-	add_history(lexer->text);
-	lexer_text(lexer, env);
-
-	while(tmp != NULL)
+	if (ft_strlen(lexer->text) != 0)
 	{
-		i = 0;
-		printf("-=-=-=-=-=-=-=-=-=-=-=-");
-		while (tmp->cmd[i])
+		add_history(lexer->text);
+		lexer_text(lexer, env);
+		while(tmp != NULL)
 		{
-			printf("\n%d -> command=%s%%\n", i + 1, tmp->cmd[i]);
-			i++;
+			i = 0;
+			printf("-=-=-=-=-=-=-=-=-=-=-=-");
+			while (tmp->cmd[i])
+			{
+				printf("\n%d -> command=%s%%\n", i + 1, tmp->cmd[i]);
+				i++;
+			}
+			tmp = tmp->next;
 		}
-		tmp = tmp->next;
 	}
 }
 
 int main(int ac, char **av, char **envp)
 {
-	char	**envp_cpy;
+	// char	**envp_cpy;
 	t_all 	*lexer;
 	
+
 	if (ac != 1 || av[1])
 		error_arg();
 	lexer = (t_all *)malloc(sizeof(t_all));
-	envp_cpy = ft_ddup(envp);
+	// envp_cpy = ft_ddup(envp);
 	lexer->next = NULL;
 
 	while (1)
