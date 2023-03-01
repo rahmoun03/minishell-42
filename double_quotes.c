@@ -6,7 +6,7 @@
 /*   By: moazzedd <moazzedd@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 15:36:13 by moazzedd          #+#    #+#             */
-/*   Updated: 2023/03/01 19:42:43 by moazzedd         ###   ########.fr       */
+/*   Updated: 2023/03/01 21:20:50 by moazzedd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void    skip(t_var *vars, t_all *tmp)
             vars->j++;
         }
         vars->j++;
+        tmp->cmd[vars->i][vars->x] = tmp->cmd[vars->i][vars->j];
     }
 }
 
@@ -49,9 +50,9 @@ void    remove_dq(t_all *tmp)
             while (tmp->cmd[vars.i][vars.j])
             {
                 skip(&vars, tmp);
-                tmp->cmd[vars.i][vars.x] = tmp->cmd[vars.i][vars.j];
                 vars.j++;
                 vars.x++;
+                tmp->cmd[vars.i][vars.x] = tmp->cmd[vars.i][vars.j];
             }
             vars.i++;
             ft_init(&vars);
