@@ -1,4 +1,5 @@
 #include "minishell.h"
+
 void	double_free(char **str)
 {
 	int i = 0;
@@ -67,6 +68,7 @@ void	init_lexer(t_all *lexer, char **env)
 	{
 		add_history(lexer->text);
 		lexer_text(lexer, env);
+		remove_dq(lexer);
 		tmp = lexer;
 		while(tmp != NULL)
 		{
@@ -79,6 +81,7 @@ void	init_lexer(t_all *lexer, char **env)
 			}
 			tmp = tmp->next;
 		}
+		/*----- in the end of code -----*/
 		double_free(lexer->command);
 		double_free(lexer->cmd);
 		free(lexer);

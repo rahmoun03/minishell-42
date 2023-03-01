@@ -24,6 +24,14 @@ typedef struct s_all
 	struct s_all	*next;
 }					t_all;
 
+typedef struct s_var
+{
+	int		i;
+	int		j;
+	int		x;
+	t_all	*temp;
+}			t_var;
+
 //      error
 void	error_arg(void);
 void    ft_error(void);
@@ -38,5 +46,6 @@ char 	**ft_ddup(char **str);
 int		ft_strlen(char *str);
 char	**ft_split(char const *s, char *c);
 char    *sp_split(char *str);
+void    remove_dq(t_all *);
 
 # endif
