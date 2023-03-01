@@ -1,6 +1,17 @@
 #include "minishell.h"
+static int cmp_sep(char c, char *sep)
+{
+	int i = 0;
+	while (sep[i])
+	{
+		if(sep[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
-static int	ft_count_words(char *s, char c)
+static int	ft_count_words(char *s, char *c)
 {
 	int	i;
 	int	word;
@@ -22,21 +33,14 @@ static int	ft_count_words(char *s, char c)
 				i++;
 			}
 		}
-		if ((s[i] != c) && (s[i + 1] == c || s[i + 1] == '\0'))
+		if ((!cmp_sep(s[i] ,c)) && (cmp_sep(s[i + 1], c) || s[i + 1] == '\0'))
 			word++;
 		i++;
 	}
 	return (word);
 }
 
-static int	ft_is_sep(char s, char c)
-{
-	if (s == c)
-		return (1);
-	return (0);
-}
-
-static void	ft_alocate(char **tab, char *s, char c, int w)
+static void	ft_alocate(char **tab, char *s, char *c, int w)
 {
 	int	i;
 	int	a;
@@ -50,9 +54,9 @@ static void	ft_alocate(char **tab, char *s, char c, int w)
 	while (j < w)
 	{
 		i = 0;
-		while (ft_is_sep(s[a], c))
+		while (cmp_sep(s[a], c))
 			a++;
-		while (ft_is_sep(s[a + i], c) == 0)
+		while (!cmp_sep(s[a + i], c))
 		{
 			if (s[a + i] == 34 || s[a + i] == 39)
 			{
@@ -68,7 +72,7 @@ static void	ft_alocate(char **tab, char *s, char c, int w)
 					i++;
 				}
 			}
-			if (ft_is_sep(s[a + i + 1], c) || s[a + 1 + i] == '\0')
+			if (cmp_sep(s[a + i + 1], c) || s[a + 1 + i] == '\0')
 			{
 				i++;
 				tab[j] = (char *)malloc(i + 1);
@@ -81,7 +85,7 @@ static void	ft_alocate(char **tab, char *s, char c, int w)
 	}
 }
 
-static void	ft_fill_split(char **tab, char *s, char c)
+static void	ft_fill_split(char **tab, char *s, char *c)
 {
 	int	i;
 	int	j;
@@ -96,11 +100,11 @@ static void	ft_fill_split(char **tab, char *s, char c)
 	while (tab[j])
 	{
 		a = 0;
-		while (ft_is_sep(s[i + skip], c) && s[i])
+		while (cmp_sep(s[i + skip], c) && s[i])
 			skip++;
-		if (!ft_is_sep(s[i + skip], c) && s[i])
+		if (!cmp_sep(s[i + skip], c) && s[i])
 		{
-			while (!ft_is_sep(s[i + skip], c) && s[i + skip])
+			while (!cmp_sep(s[i + skip], c) && s[i + skip])
 			{
 				if(s[i + skip] == 34 || s[i + skip] == 39)
 				{
@@ -127,7 +131,7 @@ static void	ft_fill_split(char **tab, char *s, char c)
 	}
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char *c)
 {
 	char	**tab;
 	int		total_words;

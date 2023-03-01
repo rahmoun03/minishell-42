@@ -36,10 +36,11 @@ void	lexer_text(t_all *lexer, char **envp)
 	tmp = lexer;
 	i = 0;
 	j = 0;
-	lexer->command = ft_split(lexer->text, '|');
+	lexer->command = ft_split(lexer->text, "|");
 	while (lexer->command[i])
 	{
-		tmp->cmd = ft_split(lexer->command[i], ' ');
+		lexer->command[i] = sp_split(lexer->command[i]);
+		tmp->cmd = ft_split(lexer->command[i], " ");
 		i++;
 		if (lexer->command[i])
 		{
@@ -87,6 +88,6 @@ int main(int ac, char **av, char **envp)
 		init_lexer(lexer, envp);
 
 	/*-------- executor ------*/
-		system(lexer->text);
+		// system(lexer->text);
 	}
 }

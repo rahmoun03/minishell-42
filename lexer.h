@@ -35,6 +35,8 @@ void	ft_lstadd_back(t_all **lst, t_all *new);
 //      tools
 char	*ft_strdup(const char *s1);
 char 	**ft_ddup(char **str);
-char	**ft_split(char const *s, char c);
+int		ft_strlen(char *str);
+char	**ft_split(char const *s, char *c);
+char    *sp_split(char *str);
 
 # endif

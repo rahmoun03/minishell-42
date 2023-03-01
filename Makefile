@@ -1,5 +1,5 @@
 NAME = minishell
-SRC = main.c error.c tools.c linked_list.c ft_split.c
+SRC = main.c error.c tools.c linked_list.c ft_split.c split_special.c
 CFLAGS = -Wall -Wextra -Werror
 BREW_FLAGS = -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
