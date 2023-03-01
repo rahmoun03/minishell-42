@@ -1,5 +1,13 @@
 #include "minishell.h"
-
+void	double_free(char **str)
+{
+	int i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+}
 int ft_is_char(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\0' || c == '|')
@@ -28,15 +36,12 @@ void	lexer_text(t_all *lexer, char **envp)
 {
 	(void)envp;
 	int i;
-	// int j;
-	// int len;
 	t_all *tmp;
 
-	// len = 0;
 	tmp = lexer;
 	i = 0;
-	// j = 0;
 	lexer->command = ft_split(lexer->text, "|");
+	free(lexer->text);
 	while (lexer->command[i])
 	{
 		lexer->command[i] = sp_split(lexer->command[i]);
@@ -52,14 +57,17 @@ void	lexer_text(t_all *lexer, char **envp)
 
 void	init_lexer(t_all *lexer, char **env)
 {
-	t_all *tmp = lexer;
+	lexer = ft_lstnew();
+	t_all *tmp ;
 	int i = 0;
 
+	tmp = NULL;
 	lexer->text = readline(READLINE_MSG);
 	if (ft_strlen(lexer->text) != 0)
 	{
 		add_history(lexer->text);
 		lexer_text(lexer, env);
+		tmp = lexer;
 		while(tmp != NULL)
 		{
 			i = 0;
@@ -71,20 +79,19 @@ void	init_lexer(t_all *lexer, char **env)
 			}
 			tmp = tmp->next;
 		}
+		double_free(lexer->command);
+		double_free(lexer->cmd);
+		free(lexer);
 	}
 }
 
 int main(int ac, char **av, char **envp)
 {
-	// char	**envp_cpy;
 	t_all 	*lexer;
 	
-
+	lexer = NULL;
 	if (ac != 1 || av[1])
 		error_arg();
-	lexer = (t_all *)malloc(sizeof(t_all));
-	// envp_cpy = ft_ddup(envp);
-	lexer->next = NULL;
 
 	while (1)
 	{

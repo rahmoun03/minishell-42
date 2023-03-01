@@ -54,6 +54,7 @@ char    *sp_split(char *str)
         }
         i++;
     }
+    ret[sp] = '\0';
     free(str);
     printf("{%d}\n", len);
     return ret;
