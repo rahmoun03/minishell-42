@@ -1,5 +1,4 @@
 #include "minishell.h"
-
 static int cmp_sep(char c, char *sep)
 {
 	int i = 0;
@@ -140,7 +139,6 @@ char	**ft_split(char const *s, char *c)
 	if (s == NULL)
 		return (NULL);
 	total_words = ft_count_words((char *)s, c);
-	printf("%d\n", total_words);
 	tab = (char **)malloc(sizeof(char *) * (total_words + 1));
 	if (!tab)
 		return (NULL);

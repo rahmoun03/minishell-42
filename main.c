@@ -68,6 +68,7 @@ void	init_lexer(t_all *lexer, char **env)
 	{
 		add_history(lexer->text);
 		lexer_text(lexer, env);
+		expand_var(lexer, env);
 		remove_dq(lexer);
 		tmp = lexer;
 		while(tmp != NULL)
@@ -76,11 +77,12 @@ void	init_lexer(t_all *lexer, char **env)
 			printf("-=-=-=-=-=-=-=-=-=-=-=-");
 			while (tmp->cmd[i])
 			{
-				printf("\n%d -> command=%s%%\n", i + 1, tmp->cmd[i]);
+				printf("\n%d -> cmd=%s%%\n", i + 1, tmp->cmd[i]);
 				i++;
 			}
 			tmp = tmp->next;
 		}
+		// ft_exec(lexer);
 		/*----- in the end of code -----*/
 		double_free(lexer->command);
 		double_free(lexer->cmd);

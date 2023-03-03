@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   double_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moazzedd <moazzedd@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: arahmoun <arahmoun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 15:36:13 by moazzedd          #+#    #+#             */
-/*   Updated: 2023/03/01 21:20:50 by moazzedd         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:30:35 by arahmoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,20 @@ void    ft_init(t_var *vars)
 
 void    skip(t_var *vars, t_all *tmp)
 {
+    char c;
+    
+    c = 0;
     if (tmp->cmd[vars->i][vars->j] == 39 || tmp->cmd[vars->i][vars->j] == 34)
     {
+        c = tmp->cmd[vars->i][vars->j];
         vars->j++;
-        tmp->cmd[vars->i][vars->x] = tmp->cmd[vars->i][vars->j];
-        while (tmp->cmd[vars->i][vars->j] != 34 && tmp->cmd[vars->i][vars->j] != 39)
+        while (tmp->cmd[vars->i][vars->j] && tmp->cmd[vars->i][vars->j] != c)
         {
             tmp->cmd[vars->i][vars->x] = tmp->cmd[vars->i][vars->j];
             vars->x++;
             vars->j++;
         }
         vars->j++;
-        tmp->cmd[vars->i][vars->x] = tmp->cmd[vars->i][vars->j];
     }
 }
 
@@ -50,10 +52,14 @@ void    remove_dq(t_all *tmp)
             while (tmp->cmd[vars.i][vars.j])
             {
                 skip(&vars, tmp);
-                vars.j++;
-                vars.x++;
-                tmp->cmd[vars.i][vars.x] = tmp->cmd[vars.i][vars.j];
+                if(tmp->cmd[vars.i][vars.j] != 39 && tmp->cmd[vars.i][vars.j] != 34)
+                {
+                    tmp->cmd[vars.i][vars.x] = tmp->cmd[vars.i][vars.j];
+                    vars.x++;
+                    vars.j++;
+                }
             }
+            tmp->cmd[vars.i][vars.x] = '\0';
             vars.i++;
             ft_init(&vars);
         }
@@ -61,16 +67,4 @@ void    remove_dq(t_all *tmp)
         tmp = tmp->next;
         ft_init(&vars);
     }
-    // vars.i = 0;
-    // while (vars.temp)
-    // {
-    //     while (vars.temp->cmd[vars.i])
-    //     {
-    //         printf("%s\n",vars.temp->cmd[vars.i]);
-    //         vars.i++;
-    //     }
-    //     vars.temp = vars.temp->next;
-    //     vars.i = 0;
-    // }
-    // exit(1);
 }
