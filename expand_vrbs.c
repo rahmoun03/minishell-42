@@ -6,7 +6,7 @@
 /*   By: arahmoun <arahmoun@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 22:36:06 by arahmoun          #+#    #+#             */
-/*   Updated: 2023/03/03 18:58:11 by arahmoun         ###   ########.fr       */
+/*   Updated: 2023/03/04 18:04:56 by arahmoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,11 @@ char *cpy_var(char *s, char *str)
                 len++;
             }
         }
-        len++;
+        if (s[len] != '$')
+        {
+            dst[len] = s[len];
+            len++;
+        }
     }
     while (str[a])
     {
@@ -92,6 +96,7 @@ char *cpy_var(char *s, char *str)
     while (s[slen])
         dst[len++] = s[slen++];
     dst[len] = '\0';
+    free(s);
     return dst;
 }
 
@@ -144,7 +149,6 @@ char    *fix_var(char *str, char **envp)
     {
         if(ft_strcmp(envp[i], str) == 0)
         {
-            free(str);
             str = cpy_var(str, envp[i]);
             i = 0;
         }

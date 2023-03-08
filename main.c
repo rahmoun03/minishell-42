@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arahmoun <arahmoun@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/05 18:33:33 by arahmoun          #+#    #+#             */
+/*   Updated: 2023/03/08 14:17:33 by arahmoun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	double_free(char **str)
@@ -33,9 +45,8 @@ void	skip_spaces(char *str, int *i)
 		(*i)++;
 }
 
-void	lexer_text(t_all *lexer, char **envp)
+void	lexer_text(t_all *lexer)
 {
-	(void)envp;
 	int i;
 	t_all *tmp;
 
@@ -67,14 +78,15 @@ void	init_lexer(t_all *lexer, char **env)
 	if (ft_strlen(lexer->text) != 0)
 	{
 		add_history(lexer->text);
-		lexer_text(lexer, env);
-		expand_var(lexer, env);
+		lexer_text(lexer);
+		check_pid(lexer, env);
 		remove_dq(lexer);
 		tmp = lexer;
+		printf("%s---------  parser part  ---------%s\n", RED, DEF);
 		while(tmp != NULL)
 		{
 			i = 0;
-			printf("-=-=-=-=-=-=-=-=-=-=-=-");
+			printf("------ node ------");
 			while (tmp->cmd[i])
 			{
 				printf("\n%d -> cmd=%s%%\n", i + 1, tmp->cmd[i]);
@@ -82,8 +94,9 @@ void	init_lexer(t_all *lexer, char **env)
 			}
 			tmp = tmp->next;
 		}
-		// ft_exec(lexer);
+		printf("%s---------  executer part  ---------%s\n", GREEN, DEF);
 		/*----- in the end of code -----*/
+		ft_exec(lexer);
 		double_free(lexer->command);
 		double_free(lexer->cmd);
 		free(lexer);
@@ -93,7 +106,7 @@ void	init_lexer(t_all *lexer, char **env)
 int main(int ac, char **av, char **envp)
 {
 	t_all 	*lexer;
-	
+
 	lexer = NULL;
 	if (ac != 1 || av[1])
 		error_arg();
